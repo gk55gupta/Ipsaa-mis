@@ -1,0 +1,163 @@
+<div class="card">
+  <div class="card-header card-header-warning">
+    <button type="button" class="close" aria-label="Close" (click)="hideViewPanel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+    <h4 class="card-title">Student Fee ({{mode}})</h4>
+  </div>
+  <div class="card-body">
+    <div class="card-profile-name">
+      <!-- <h5>{{studentFee.fullName}}</h5> -->
+    </div>
+    <div class="card-content">
+      <form class="tab-content" [formGroup]="studentFeeForm">
+        <div class="row">
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Program</label>
+              <input class="form-control" type="text" formControlName="programName">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Student Name</label>
+              <input class="form-control" type="text" formControlName="fullName">
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Annual Charges</label>
+              <input class="form-control" type="number" formControlName="annualFee">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Discount</label>
+              <input class="form-control" type="number" formControlName="discountAnnualCharges">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Final Annual Charges</label>
+              <input class="form-control" type="number" formControlName="finalAnnualFee" 
+               (keyup)="calaculateDiscount('annualFee', 'finalAnnualFee', 'discountAnnualCharges')">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Admission Charges</label>
+              <input class="form-control" type="number" formControlName="admissionCharges">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Discount</label>
+              <input class="form-control" type="number" formControlName="discountAdmissionCharges">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Final Admission Charges</label>
+              <input class="form-control" type="number" formControlName="finalAdmissionCharges">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Monthly Program Fees</label>
+              <input class="form-control" type="number" formControlName="baseFee">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Discount</label>
+              <input class="form-control" type="number" formControlName="discountBaseFee">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Final Monthly Fees</label>
+              <input class="form-control" type="number" formControlName="finalBaseFee">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Security Deposit</label>
+              <input class="form-control" type="number" formControlName="securityDeposit">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Discount</label>
+              <input class="form-control" type="number" formControlName="discountSecurityDeposit">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Final Security Deposit</label>
+              <input class="form-control" type="number" formControlName="finalSecurityDeposit">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Monthly Transport Fees</label>
+              <input class="form-control" type="number" formControlName="transportFee">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Uniform Charges</label>
+              <input class="form-control" type="number" formControlName="uniformCharges">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Stationery Charges</label>
+              <input class="form-control" type="number" formControlName="stationary">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Comment*</label>
+              <input class="form-control" type="text" formControlName="comment">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Annual-Fee-GST</label>
+              <input class="form-control" type="number" formControlName="gstFee">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Base-Fee-GST</label>
+              <input class="form-control" type="number" formControlName="baseFeeGst">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="control-label">Final Total Fees</label>
+              <input class="form-control" type="number" formControlName="finalFee">
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <button *ngIf="editable" class="btn btn-success">Save</button>
+  </div>
+</div>
+
+
+
+
+<!-- <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger position-absolute">
+      <div *ngIf="firstName.errors.required">Required</div>
+    </div> -->

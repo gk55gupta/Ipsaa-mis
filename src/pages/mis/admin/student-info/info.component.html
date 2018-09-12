@@ -18,7 +18,7 @@
       <span *ngIf="newStudent">New Student</span>
       <br>
       <a href="" onclick="document.getElementById('upload').click(); return false" *ngIf="!newStudent">Update Profile Pic</a>
-      <input type="file" id="upload" name="upload" style="display: none" (change)="uploadProfilePic(student, $event.target.files['0'])"
+      <input type="file" id="upload" name="upload" style="display: none" (ngModelChange)="uploadProfilePic(student, $event.target.files['0'])"
       />
     </div>
     <div class="card-content">
@@ -33,8 +33,11 @@
         <li class="nav-item">
           <a class="nav-link" data-toggle="tab" href="#parent1">Mother</a>
         </li>
-        <li class="nav-item" *ngIf="newStudent">
+        <li class="nav-item" *ngIf="studentForm.controls.fee">
           <a class="nav-link" data-toggle="tab" href="#feeTab">Fee</a>
+        </li>
+        <li class="nav-item" *ngIf="!newStudent">
+          <a class="nav-link" data-toggle="tab" href="#payment-history">Payment History</a>
         </li>
       </ul>
 
@@ -78,7 +81,7 @@
             <div class="col-lg-4">
               <div class="form-group">
                 <label class="control-label">Program : </label>
-                <select class="form-control" formControlName="programId">
+                <select class="form-control" formControlName="programId" (ngModelChange)="getFee($event)">
                   <option *ngFor="let program of programs;let c = index;" [ngValue]="program.id"> {{program.name}}</option>
                 </select>
               </div>
@@ -111,6 +114,14 @@
                 </select>
               </div>
             </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="control-label">*Date of Birth</label>
+                <input class="form-control" name="dob" type="text" required formControlName="dob" [readonly]="!newStudent">
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-lg-4">
               <div class="form-group">
                 <label class="control-label">Familty Type : </label>
@@ -121,8 +132,6 @@
                 </select>
               </div>
             </div>
-          </div>
-          <div class="row">
             <div class="col-lg-4">
               <div class="form-group">
                 <label class="control-label">*Nationality</label>
@@ -135,24 +144,96 @@
                 <input class="form-control" formControlName="expectedIn">
               </div>
             </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <div class="form-group">
+                <label class="control-label">*Comment</label>
+                <textarea class="form-control" formControlName="profile" required ng-readonly="showstudent" maxlength="1000"></textarea>
+              </div>
+            </div>
             <div class="col-lg-4">
               <div class="form-group">
                 <label class="control-label">Expected Out : </label>
                 <input class="form-control" formControlName="expectedOut">
               </div>
-            </div>            
+            </div>
           </div>
           <div class="row">
             <div class="col-lg-4">
               <div class="form-group">
                 <div class="checkbox" style="padding-top: 45px;">
                   <label>
-                    <input type="checkbox" checked="checked" formControlName="corporate"> Corporate Student
+                    <input type="checkbox" checked="checked" formControlName="corporate" (ngModelChange)="removeFee($event)"> Corporate Student
                   </label>
                 </div>
               </div>
             </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <div class="checkbox" style="padding-top: 45px;">
+                  <label>
+                    <input type="checkbox" (ngModelChange)="formalClicked($event)" name="formalSchool" formControlName="formalSchool"> Formal School
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="control-label">*School Name</label>
+                <input class="form-control" name="school" type="text" formControlName="schoolName" required [disabled]="!studentForm.controls.formalSchool.value">
+                <span class="material-input"></span>
+              </div>
+            </div>
           </div>
+          <div class="row" *ngIf="newStudent">
+              <div class="col-md-12">
+                <div class="checkbox" style="padding-top: 45px;">
+                  <label>Siblings
+                    <input type="checkbox" name="sibling" [(ngModel)]="sibling.hasSibling" [ngModelOptions]="{standalone: true}">
+                  </label>
+                </div>
+              </div>
+  
+              <div class="col-md-3">
+                <div class="form-group ">
+                  <label class="control-label">*Center</label>
+                  <select class="form-control" id="sel3" [ngModelOptions]="{standalone: true}" [(ngModel)]="siblingCenter" [disabled]="!sibling.hasSibling">
+                      <option value="">Select</option>
+                    <option *ngFor="let center of centers;" [ngValue]="center">{{center.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group ">
+                  <label class="control-label">Sibling Program</label>
+                  <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="siblingProgram" [disabled]="!sibling.hasSibling">
+                    <option value="">Select</option>
+                    <option *ngFor="let program of programs;" [ngValue]="program"> {{program.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group ">
+                  <label class="control-label">Sibling Group</label>
+                  <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="siblingGroup" [disabled]="!sibling.hasSibling">
+                      <option value="">Select</option>
+                    <option *ngFor="let group of groups;" [ngValue]="group"> {{group.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group ">
+                  <label class="control-label">Student</label>
+                  <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="sibling.siblingId" [disabled]="!sibling.hasSibling" (ngModelChange)="siblingSelected($event)">
+                    <option value="">Select</option>
+                    <ng-container *ngFor="let student of students;">
+                      <option [ngValue]="student" *ngIf="student.center.id == siblingCenter.id && student.program.id == siblingGroup.id && student.group.id">{{student.fullName}}</option>
+                    </ng-container>
+                  </select>
+                </div>
+              </div>
+            </div>
         </div>
         <ng-container formArrayName="parents">
           <div [attr.id]="'parent'+i" class="container tab-pane fade" *ngFor=" let parent of studentForm.controls.parents.controls;let i = index;"
@@ -300,11 +381,177 @@
             </div>
           </div>
         </ng-container>
-        <div id="feeTab" class="container tab-pane" *ngIf="newStudent">
-          <br>
-          <p>
-            <strong>Fee Section Comming Soon</strong>
-          </p>
+        <div id="feeTab" class="container tab-pane" *ngIf="studentForm.controls.fee">
+          <div formGroupName="fee">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label">Annual Charges</label>
+                  <input class="form-control" type="number" formControlName="annualFee" readonly>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label">Discount
+                    <sup>(%)</sup>
+                  </label>
+                  <input class="form-control" type="number" formControlName="discountAnnualCharges" readonly>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label">Final Annual Charges
+                  </label>
+                  <input class="form-control" type="number" formControlName="finalAnnualFee" required [readonly]="!newStudent" min="0" (ngModelChange)="calculateDiscount('annualFee','finalAnnualFee', 'discountAnnualCharges')">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label">Admission Charges</label>
+                  <input class="form-control" type="number" formControlName="admissionFee" readonly>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label">Discount
+                    <sup>(%)</sup>
+                  </label>
+                  <input class="form-control" type="number" formControlName="discountAdmissionCharges" readonly>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label">Final Admission Charges</label>
+                  <input class="form-control" type="number" formControlName="finalAdmissionCharges" required [readonly]="!newStudent || studentForm.controls.fee.controls.admissionFee.value <= 0"
+                    min="0" (ngModelChange)="calculateDiscount('admissionFee', 'finalAdmissionCharges', 'discountAdmissionCharges')"
+                    [disabled]="!studentForm.controls.fee.controls.admissionFee.value">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label">Monthly Program Fees</label>
+                  <input class="form-control" type="number" formControlName="baseFee" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label">Discount
+                    <sup>(%)</sup>
+                  </label>
+                  <input class="form-control" type="number" formControlName="discountBaseFee" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label">Final Monthly Fees Amount</label>
+                  <input class="form-control" type="text" formControlName="finalBaseFee" required [readonly]="!newStudent || studentForm.controls.fee.controls.baseFee.value <= 0"
+                    [disabled]="!studentForm.controls.fee.controls.baseFee.value" min="0" (ngModelChange)="calculateDiscount('baseFee', 'finalBaseFee', 'discountBaseFee')">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label">Security Deposit</label>
+                  <input class="form-control" type="number" formControlName="deposit" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label">Discount
+                    <sup>(%)</sup>
+                  </label>
+                  <input class="form-control" type="number" formControlName="discountSecurityDeposit" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label">Final Security Deposit Fees</label>
+                  <input class="form-control" type="number" formControlName="finalSecurityDeposit" required [readonly]="!newStudent || studentForm.controls.fee.controls.deposit.value <= 0"
+                    [disabled]="!studentForm.controls.fee.controls.deposit.value" min="0" (ngModelChange)="calculateDiscount('deposit', 'finalSecurityDeposit', 'discountSecurityDeposit')">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">Monthly Transport Fees</label>
+                  <input class="form-control" type="number" formControlName="transportFee" [readonly]="!newStudent" (ngModelChange)="monthlyTransportFeesChanged(studentForm.controls.fee.value)">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">Uniform Charges</label>
+                  <input class="form-control" type="number" formControlName="uniformCharges" [readonly]="!newStudent" (ngModelChange)="monthlyUniformChargesChanged(studentForm.controls.fee.value)">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">Stationery Charges</label>
+                  <input class="form-control" type="number" formControlName="stationary" [readonly]="!newStudent" (ngModelChange)="monthlyStationeryChargesChanged(studentForm.controls.fee.value)">
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label">Comment*</label>
+                  <input class="form-control" type="text" formControlName="comment" [readonly]="!newStudent">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">Annual-GST-Fee</label>
+                  <input class="form-control" type="text" formControlName="gstFee" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">Base-Fee-GST &nbsp;
+                    <a href="#" data-toggle="tooltip" title="18% If Applicable">
+                      <i class="fa fa-info"></i>
+                    </a>
+                  </label>
+                  <input class="form-control" type="text" formControlName="baseFeeGst" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">Final Total Fees</label>
+                  <input class="form-control" type="number" formControlName="finalFee" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="payment-history" class="container tab-pane" *ngIf="!newStudent">
+            <table class="table">
+                <thead class="text-danger">
+                  <th>Invoice Date</th>
+                  <th>Quarter</th>
+                  <th>Total Fee</th>
+                  <th>Total Paid Amount</th>
+                </thead>
+                  <tr *ngFor="let history of paymentHistory;">
+                    <td>{{history.invoiceDate}}</td>
+                    <td>{{quarters[history.quarter]}}</td>
+                    <td>{{history.totalFee}}</td>
+                    <td class="text-danger">{{history.totalPaidAmount}}</td>
+                  </tr>
+                </tbody>
+              </table>
         </div>
       </form>
     </div>

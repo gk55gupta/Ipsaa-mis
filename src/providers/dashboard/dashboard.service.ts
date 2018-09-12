@@ -14,6 +14,10 @@ export class DashboardService {
   centers: Center[];
   constructor(public api: Api) {}
 
+  getDashboardTabs() {
+    return this.api.get('api/dash/');
+  }
+
   getZones() {
     return this.api.get('api/zone/');
   }
@@ -80,5 +84,9 @@ export class DashboardService {
 
   getStudentFee(body: any) {
     return this.api.post('api/dash/studentfee', body);
+  }
+
+  getFollowups() {
+    return this.api.post('api/dash/followupreport', {});
   }
 }

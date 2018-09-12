@@ -28,6 +28,10 @@ export const MISRoutes: Routes = [
       {
         path: 'attendance',
         loadChildren: 'pages/mis/attendance/attendance.module#AttendanceModule'
+      },
+      {
+        path: 'fee',
+        loadChildren: 'pages/mis/fee/fee.module#FeeModule'
       }
     ]
   }

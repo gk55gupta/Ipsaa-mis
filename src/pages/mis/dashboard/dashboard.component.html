@@ -39,10 +39,9 @@
         </div>
         <p class="card-category">Inuiries</p>
         <h3 class="card-title">{{statsResult.monthInquiries}}
-          <!-- <small>GB</small> -->
         </h3>
       </div>
-      <div class="card-footer">
+      <div class="card-footer" (click)="getFolloups()">
         <div class="stats">
           <a class="link"> Open: {{statsResult.openFollowups}} | Today : {{statsResult.todayFollowups}} | Due : {{statsResult.previousFollowups}}</a>
         </div>
@@ -57,7 +56,6 @@
         </div>
         <p class="card-category">Centers</p>
         <h3 class="card-title">{{statsResult.centers}}
-          <!-- <small>GB</small> -->
         </h3>
       </div>
       <div class="card-footer" (click)="getCenterList()">
@@ -75,7 +73,6 @@
         </div>
         <p class="card-category">Staff</p>
         <h3 class="card-title">{{statsResult.staffCount}}
-          <!-- <small>GB</small> -->
         </h3>
         <p class="card-category">Staff Cost : {{statsResult.staffCost}}</p>
       </div>
@@ -98,7 +95,6 @@
         </div>
         <p class="card-category">Students</p>
         <h3 class="card-title">{{statsResult.students}}
-          <!-- <small>GB</small> -->
         </h3>
       </div>
       <div class="card-footer">
@@ -110,7 +106,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-4 col-sm-4">
+  <!-- <div class="col-md-4 col-sm-4">
     <div class="card card-stats">
       <div class="card-header card-header-warning card-header-icon">
         <div class="card-icon">
@@ -118,7 +114,6 @@
         </div>
         <p class="card-category">Monthly Fee</p>
         <h3 class="card-title" *ngIf="monthlyFee.expectedFee">{{monthlyFee.expectedFee.monthly ? monthlyFee.expectedFee.monthly : 0}}
-          <!-- <small>GB</small> -->
         </h3>
         <div class="row">
           <div class="col-md-6">
@@ -147,7 +142,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="col-md-4 col-sm-4">
     <div class="card card-stats">
       <div class="card-header card-header-warning card-header-icon">
@@ -156,7 +151,6 @@
         </div>
         <p class="card-category">Quarterly Fee</p>
         <h3 class="card-title" *ngIf="quarterlyFee.expectedFee">{{quarterlyFee.expectedFee.quarterly ? quarterlyFee.expectedFee.quarterly : 0}}
-          <!-- <small>GB</small> -->
         </h3>
         <div class="row">
           <div class="col-md-6">

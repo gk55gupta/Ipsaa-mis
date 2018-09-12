@@ -33,7 +33,7 @@
         <p>{{menuItem.title}}</p>
       </a>
     </li>
-    <li routerLinkActive="active" class="nav-item">
+    <!-- <li routerLinkActive="active" class="nav-item">
       <a class="nav-link" data-toggle="collapse" href="#admin">
         <i class="material-icons">settings</i>
         <p>Admin
@@ -104,7 +104,7 @@
             </li>
           </ul>
         </div>
-      </li>
+    </li>
     <li routerLinkActive="active" class="nav-item">
       <a class="nav-link" data-toggle="collapse" href="#payroll">
         <i class="material-icons">attach_money</i>
@@ -128,7 +128,7 @@
           </li>
         </ul>
       </div>
-    </li>
+    </li> -->
     <li routerLinkActive="active" *ngFor="let item of menu.items" class="nav-item">
       <a class="nav-link" data-toggle="collapse" [attr.href]="'#id_' + item.label.split(' ').join('-')">
         <i class="material-icons">{{item.icon}}</i>
@@ -138,8 +138,8 @@
       </a>
       <div class="collapse" [attr.id]="'id_'+item.label.split(' ').join('-')" data-parent="#accordion">
         <ul class="nav">
-          <li class="nav-item" *ngFor="let submenu of item.submenu">
-            <a class="nav-link" [attr.href]="submenu.state" (click)="menuClicked()">
+          <li class="nav-item" routerLinkActive="active" *ngFor="let submenu of item.submenu">
+            <a class="nav-link" [routerLink]="submenu.state">
               <span class="sidebar-mini">&nbsp;</span>
               <span class="sidebar-normal">{{submenu.label}}</span>
             </a>

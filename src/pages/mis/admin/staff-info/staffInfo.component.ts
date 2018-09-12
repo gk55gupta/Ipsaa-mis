@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AdminService } from '../../../../providers/admin/admin.service';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import * as _ from 'underscore';
 import { AlertService } from '../../../../providers/alert/alert.service';
 declare let $: any;
@@ -119,36 +119,36 @@ export class StaffInfoComponent implements OnInit {
       id: [''],
       eid: [''],
       costCenter: this.fb.group({
-        id: ['select'],
+        id: [null],
         name: [''],
         code: [''],
         type: [''],
         active: ['']
       }),
-      employerId: [''],
-      employerName: ['select'],
+      employerId: [null, Validators.required],
+      employerName: [''],
       reportingManagerId: [''],
-      reportingManagerName: ['select'],
+      reportingManagerName: [null, Validators.required],
       name: [''],
-      firstName: [''],
-      lastName: [''],
-      mobile: [''],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      mobile: ['', [Validators.required]],
       secondaryNumbers: [''],
-      email: [''],
+      email: ['', [Validators.required, Validators.email]],
       payrollEnabled: [''],
       attendanceEnabled: [''],
-      designation: [''],
-      type: ['select'],
+      designation: ['', Validators.required],
+      type: [null, Validators.required],
       active: [''],
-      expectedIn: [''],
-      expectedOut: [''],
-      maritalStatus: ['select'],
+      expectedIn: ['', Validators.required],
+      expectedOut: ['', Validators.required],
+      maritalStatus: [null, Validators.required],
       profile: this.getProfile(),
-      biometricId: [''],
+      biometricId: ['', Validators.required],
       approvalStatus: [''],
-      expectedHours: [''],
+      expectedHours: ['', Validators.required],
       aadharNumber: [''],
-      costCenterId: [''],
+      costCenterId: [null, Validators.required],
       mode: [''],
       searchReportingManager: ['']
     });
@@ -157,24 +157,24 @@ export class StaffInfoComponent implements OnInit {
   getProfile() {
     return this.fb.group({
       imagePath: [''],
-      gender: [''],
-      doj: [''],
-      dob: [''],
+      gender: [null, Validators.required],
+      doj: ['', Validators.required],
+      dob: ['', Validators.required],
       dol: [''],
       address: this.fb.group({
-        address: [''],
-        city: [''],
-        state: [''],
-        zipcode: [''],
-        phone: [''],
+        address: ['', Validators.required],
+        city: ['', Validators.required],
+        state: ['', Validators.required],
+        zipcode: ['', Validators.required],
+        phone: ['', Validators.required],
         addressType: ['']
       }),
       permanentAddress: this.fb.group({
-        address: [''],
-        city: [''],
-        state: [''],
-        zipcode: [''],
-        phone: [''],
+        address: ['', Validators.required],
+        city: ['', Validators.required],
+        state: ['', Validators.required],
+        zipcode: ['', Validators.required],
+        phone: ['', Validators.required],
         addressType: ['']
       }),
       pan: [''],
@@ -190,7 +190,39 @@ export class StaffInfoComponent implements OnInit {
     });
   }
 
+  // getter methods for template
+  get email() { return this.staffForm.get('email'); }
+  get firstName() { return this.staffForm.get('firstName'); }
+  get lastName() { return this.staffForm.get('lastName'); }
+  get dob() { return this.staffForm.controls['profile'].get('dob'); }
+  get doj() { return this.staffForm.controls['profile'].get('doj'); }
+  get costCenterId() { return this.staffForm.get('costCenterId'); }
+  get maritalStatus() { return this.staffForm.get('maritalStatus'); }
+  get gender() { return this.staffForm.controls['profile'].get('gender'); }
+  get type() { return this.staffForm.get('type'); }
+  get designation() { return this.staffForm.get('designation'); }
+  get mobile() { return this.staffForm.get('mobile'); }
+  get reportingManagerName() { return this.staffForm.get('reportingManagerName'); }
+  get expectedIn() { return this.staffForm.get('expectedIn'); }
+  get expectedOut() { return this.staffForm.get('expectedOut'); }
+  get expectedHours() { return this.staffForm.get('expectedHours'); }
+  get employerId() { return this.staffForm.get('employerId'); }
+  get biometricId() { return this.staffForm.get('biometricId'); }
+  get address() { return this.staffForm.get('profile').get('address').get('address'); }
+  get city() { return this.staffForm.get('profile').get('address').get('city'); }
+  get state() { return this.staffForm.get('profile').get('address').get('state'); }
+  get zipcode() { return this.staffForm.get('profile').get('address').get('zipcode'); }
+  get phone() { return this.staffForm.get('profile').get('address').get('phone'); }
+  get address2() { return this.staffForm.get('profile').get('permanentAddress').get('address'); }
+  get city2() { return this.staffForm.get('profile').get('permanentAddress').get('city'); }
+  get state2() { return this.staffForm.get('profile').get('permanentAddress').get('state'); }
+  get zipcode2() { return this.staffForm.get('profile').get('permanentAddress').get('zipcode'); }
+  get phone2() { return this.staffForm.get('profile').get('permanentAddress').get('phone'); }
+
   saveStaff() {
+    // if (this.staffForm.status) {
+    //   return;
+    // }
     if (this.newStaff) {
       // for new staff add request
       console.log(this.staffForm.value);

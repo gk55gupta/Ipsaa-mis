@@ -40,6 +40,10 @@ export class AdminService {
     return this.api.delete('api/student/' + studentId);
   }
 
+  getStudentPaymentHistory(studentId: number) {
+    return this.api.get('api/student/payments/history/' + studentId);
+  }
+
   // Used by staffComponent
   getStaff() {
     return this.api.get('api/staff/all/');
@@ -73,6 +77,10 @@ export class AdminService {
 
   updateStudent(student: any) {
     return this.api.put('api/student/', student);
+  }
+
+  addStudent(student: any) {
+    return this.api.post('api/student/', student);
   }
 
   saveZone(zone: any) {
@@ -207,4 +215,9 @@ export class AdminService {
   clockOutStudent(student: any) {
     return this.api.post('api/attendance/student/clockout/', {studentId: student.id});
   }
+
+  getProgramFee(programNgroup: any) {
+    return this.api.post('api/center/fee/', programNgroup);
+  }
+
 }

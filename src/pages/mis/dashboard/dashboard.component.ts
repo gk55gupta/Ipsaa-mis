@@ -222,7 +222,7 @@ export class DashboardComponent implements OnInit {
             'name',
             'program',
             'group',
-            'corporate',
+            'present',
             'checkin',
             'checkout',
             'expectedOut',
@@ -247,7 +247,7 @@ export class DashboardComponent implements OnInit {
             'name',
             'program',
             'group',
-            'corporate',
+            'present',
             'checkin',
             'checkout',
             'expectedOut',
@@ -299,6 +299,23 @@ export class DashboardComponent implements OnInit {
         'discount',
         'finalFee',
         'feeDuration'
+      ];
+    });
+  }
+
+  getFolloups() {
+    this.adminService.viewPanel.next(false);
+    this.tableFor = '';
+    this.tableTitle = 'Followup Report';
+    this.tableData = [];
+    this.tableColumn = [];
+    this.dashboardService.getFollowups().subscribe((response: any) => {
+      this.tableData = response;
+      this.tableColumn = [
+        'centerName',
+        'openFollowUps',
+        'previousFollowUps',
+        'todayFollowUps',
       ];
     });
   }

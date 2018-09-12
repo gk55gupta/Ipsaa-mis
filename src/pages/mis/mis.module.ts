@@ -4,12 +4,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MISRoutes, MISRoutingModule } from './mis.routing';
 
-import {
-  MatButtonModule,
-  MatInputModule,
-  MatRippleModule,
-  MatTooltipModule
-} from '@angular/material';
 import { ComponentsModule } from '../components/components.module';
 import { MISComponent } from './mis.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -22,11 +16,7 @@ import { AdminModule } from './admin/admin.module';
     MISRoutingModule,
     FormsModule,
     ComponentsModule,
-    AdminModule,
-    MatButtonModule,
-    MatRippleModule,
-    MatInputModule,
-    MatTooltipModule
+    AdminModule
   ],
   declarations: [MISComponent, DashboardComponent],
   providers: [PagerService],
