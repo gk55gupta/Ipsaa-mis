@@ -1,18 +1,19 @@
 <div class="row">
   <div class="col-sm-4">
-    <mat-form-field>
-      <mat-select placeholder="Center" [(ngModel)]="selectedCenter" (ngModelChange)="loadStudentFeeByCenter()">
-        <mat-option *ngFor="let center of centers" [value]="center">
-          {{center.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="form-group">
+      <label for="center">Center:</label>
+      <select class="form-control" id="center" [(ngModel)]="selectedCenter" (ngModelChange)="loadStudentFeeByCenter()">
+        <option *ngFor="let center of centers;" [ngValue]="center">{{center.name}}</option>
+      </select>
+      <span class="material-input"></span>
+    </div>
   </div>
   
   <div class="col-sm-4">
-    <mat-form-field>
-      <input matInput placeholder="Search" [(ngModel)]="searchedStudent" (ngModelChange)="searchStudent()">
-    </mat-form-field>
+    <div class="form-group">
+      <label for="center">Center:</label>
+      <input class="form-control" type="text" placeholder="Search By Student Name" [(ngModel)]="searchedStudent" (ngModelChange)="searchStudent()">
+    </div>
   </div>
   
 </div>
@@ -55,13 +56,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let student of studentFeeList" class="staff-list-row" [hidden]="loadingFeeList" (click)="getStudentFee(student, 'view')">
-                <td>{{student.fullName}}</td>
-                <td>{{student.program.description}}</td>
-                <td>{{student.group.description}}</td>
-                <td>{{student.center.name}}</td>
-                <td>{{student.baseFee}}</td>
-                <td>{{student.finalFee}}</td>
+              <tr *ngFor="let student of studentFeeList" class="staff-list-row" [hidden]="loadingFeeList">
+                <td (click)="getStudentFee(student, 'view')">{{student.fullName}}</td>
+                <td (click)="getStudentFee(student, 'view')">{{student.program.description}}</td>
+                <td (click)="getStudentFee(student, 'view')">{{student.group.description}}</td>
+                <td (click)="getStudentFee(student, 'view')">{{student.center.name}}</td>
+                <td (click)="getStudentFee(student, 'view')">{{student.baseFee}}</td>
+                <td (click)="getStudentFee(student, 'view')">{{student.finalFee}}</td>
                 <td class="action-buttons">
                   <button type="button" class="btn btn-primary btn-sm" (click)="getStudentFee(student, 'edit')">edit</button>
                 </td>
@@ -101,7 +102,7 @@
     <div class="card" id="studentFee_info">
   
     </div>
-    <!-- <app-student-fee-info [id]="selectedStaff.id" [update]="update"></app-student-fee-info> -->
+    <app-student-fee-info [id]="selectedStudent.id" [update]="editStudentFee"></app-student-fee-info>
   </div>
 </div>
   

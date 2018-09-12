@@ -1,3 +1,5 @@
+// to do: reset selected staff when stafflist changed or new stafflist fetched
+
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../../../providers/admin/admin.service';
 import swal from 'sweetalert';
@@ -61,6 +63,10 @@ export class AppStaffComponent implements OnInit {
   }
 
   getStaff() {
+    if (this.selectedStaff) {
+      this.selectedStaff = {};
+      this.adminService.viewPanel.next(false);
+    }
     this.adminService.getStaff().subscribe(response => {
       this.allItems = response;
       this.staffList = this.allItems;
